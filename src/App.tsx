@@ -56,17 +56,21 @@ const App: React.FC = () => {
               <TooltipComponent content="Settings" position="TopCenter">
                 <button
                   type="button"
-                  onClick={() => setThemeSettings(true)}
+                  onClick={() => setThemeSettings(!themeSettings)}
                   style={{ background: currentColor, borderRadius: '50%' }}
                   className="hover:bg-light-gray p-3 text-3xl text-white hover:drop-shadow-xl"
                 >
-                  <FiSettings />
+                  <FiSettings
+                    className={`${themeSettings ? 'rotate-90' : ''} transition-transform duration-300`}
+                  />
                 </button>
               </TooltipComponent>
             </div>
 
+            {themeSettings && <ThemeSettings />}
+
             <div
-              className={clsx('dark:bg-secondary-dark', {
+              className={clsx('dark:bg-secondary-dark transition-all duration-300', {
                 'sidebar fixed w-72 bg-white': activeMenu,
                 'hidden w-0': !activeMenu,
               })}
@@ -75,16 +79,19 @@ const App: React.FC = () => {
             </div>
 
             <div
-              className={clsx('dark:bg-primary bg-primary min-h-screen w-full', {
-                'md:ml-72': activeMenu,
-                'flex-2': !activeMenu,
-              })}
+              className={clsx(
+                'dark:bg-primary bg-primary min-h-screen w-full transition-all duration-300',
+                {
+                  'md:ml-72': activeMenu,
+                  'flex-2': !activeMenu,
+                },
+              )}
             >
-              <div className="bg-main-bg dark:bg-main-dark-bg navbar fixed w-full md:static">
+              <div className="bg-main-bg dark:bg-main-dark-bg navbar fixed z-10 w-full md:static">
                 <Navbar />
               </div>
 
-              <div>
+              <div className="w-full">
                 <Routes>
                   {/* Dashboard */}
                   <Route path="/" element={<Ecommerce />} />

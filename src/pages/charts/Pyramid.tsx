@@ -20,7 +20,7 @@ const Pyramid = () => {
   const { currentMode } = useStateContext();
 
   return (
-    <div className="dark:bg-secondary-dark-bg m-4 mt-24 rounded-3xl bg-white p-10 md:m-10">
+    <div className="dark:bg-secondary-dark m-4 mt-24 rounded-3xl bg-white p-10 md:m-10">
       <ChartsHeader category="Pyramid" title="Food Comparison Chart" />
       <div className="w-full">
         <AccumulationChartComponent

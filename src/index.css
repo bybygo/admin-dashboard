@@ -1,3 +1,18 @@
+@import "@syncfusion/ej2-base/styles/material.css";
+@import "@syncfusion/ej2-buttons/styles/material.css";
+@import "@syncfusion/ej2-calendars/styles/material.css";
+@import "@syncfusion/ej2-dropdowns/styles/material.css";
+@import "@syncfusion/ej2-inputs/styles/material.css";
+@import "@syncfusion/ej2-navigations/styles/material.css";
+@import "@syncfusion/ej2-popups/styles/material.css";
+@import "@syncfusion/ej2-splitbuttons/styles/material.css";
+@import "@syncfusion/ej2-grids/styles/material.css";
+@import "@syncfusion/ej2-schedule/styles/material.css";
+@import "@syncfusion/ej2-lists/styles/material.css";
+@import '@syncfusion/ej2-kanban/styles/material.css';
+@import '@syncfusion/ej2-inplace-editor/styles/material.css';
+@import "@syncfusion/ej2-react-richtexteditor/styles/material.css";
+
 @import "tailwindcss";
 
 @import "./theme.css";
@@ -16,11 +31,17 @@ body {
 
 .sidebar {
   box-shadow: rgb(113 122 131 / 11%) 0 7px 30px 0;
+  background: white;
+  min-height: 100vh;
+  padding: 1rem;
+  transition: 0.3s ease;
 }
 
 @media screen and (max-width:800px) {
   .sidebar{
     z-index: 10000000;
+    position: fixed;
+    left: 0;
   }
 }
 
@@ -39,8 +60,31 @@ body {
   background-color: transparent;
 }
 
-/* color-picker style  */
+/* Quick popup styles */
+.e-quick-popup-wrapper {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
 
+.e-quick-popup-wrapper .e-header {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.e-quick-popup-wrapper .e-popup-content {
+  padding: 1rem;
+}
+
+/* DatePicker styles */
+.e-calendar {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.e-calendar .e-content {
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+/* color-picker style  */
 #preview {
   display: inline-block;
   height: 80px;

@@ -29,27 +29,53 @@ const PropertyPane: React.FC<ScheduleProps> = (props) => {
 
 const Calendar = () => {
   const [scheduleObj, setScheduleObj] = useState<ScheduleComponent | null>(null);
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const change = (args: { value: Date }) => {
-    if (scheduleObj) {
-      scheduleObj.selectedDate = args.value;
-      scheduleObj.dataBind();
+    try {
+      if (scheduleObj && args.value) {
+        setCurrentDate(args.value);
+        scheduleObj.selectedDate = args.value;
+        scheduleObj.dataBind();
+      }
+    } catch (error) {
+      console.error('Error updating calendar date:', error);
     }
   };
 
   const onDragStart = (arg: { event: { target: HTMLElement } }) => {
-    arg.event.target.classList.add('e-selected');
+    try {
+      if (arg.event && arg.event.target) {
+        arg.event.target.classList.add('e-selected');
+      }
+    } catch (error) {
+      console.error('Error on drag start:', error);
+    }
   };
 
   return (
-    <div className="m-2 mt-24 rounded-3xl bg-white p-2 md:m-10 md:p-10">
-      <Header category="App" title="Calendar" />
+    <div className="dark:bg-secondary-dark m-2 mt-16 rounded-3xl bg-white p-2 md:m-10 md:p-10">
+      <Header category="Page" title="Calendar" />
       <ScheduleComponent
+        width="100%"
         height="650px"
         ref={(schedule) => setScheduleObj(schedule)}
-        selectedDate={new Date(2021, 0, 10)}
-        eventSettings={{ dataSource: scheduleData }}
+        selectedDate={currentDate}
+        eventSettings={{
+          dataSource: scheduleData,
+          fields: {
+            id: 'Id',
+            subject: { name: 'Subject', title: 'Event Name' },
+            location: { name: 'Location' },
+            description: { name: 'Description' },
+            startTime: { name: 'StartTime' },
+            endTime: { name: 'EndTime' },
+          },
+        }}
         dragStart={onDragStart}
+        showQuickInfo={true}
+        timeScale={{ enable: true, interval: 60, slotCount: 2 }}
+        workHours={{ highlight: true, start: '09:00', end: '18:00' }}
       >
         <ViewsDirective>
           {['Day', 'Week', 'WorkWeek', 'Month', 'Agenda'].map((item) => (
@@ -59,21 +85,17 @@ const Calendar = () => {
         <Inject services={[Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop]} />
       </ScheduleComponent>
       <PropertyPane>
-        <table style={{ width: '100%', background: 'white' }}>
-          <tbody>
-            <tr style={{ height: '50px' }}>
-              <td style={{ width: '100%' }}>
-                <DatePickerComponent
-                  value={new Date(2021, 0, 10)}
-                  showClearButton={false}
-                  placeholder="Current Date"
-                  floatLabelType="Always"
-                  change={change}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="mt-5">
+          <DatePickerComponent
+            value={currentDate}
+            showClearButton={false}
+            placeholder="Current Date"
+            floatLabelType="Always"
+            change={change}
+            format="dd/MM/yyyy"
+            width="100%"
+          />
+        </div>
       </PropertyPane>
     </div>
   );

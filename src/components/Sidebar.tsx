@@ -33,7 +33,7 @@ const Sidebar = () => {
           <div className="flex items-center justify-between">
             <Link
               to="/"
-              onClick={handleCloseSideBar}
+              onClick={() => setActiveMenu(!activeMenu)}
               className="mt-4 ml-3 flex items-center gap-3 text-xl font-extrabold tracking-tight text-slate-900 dark:text-white"
             >
               <SiShopware /> <span>Shoppy</span>
