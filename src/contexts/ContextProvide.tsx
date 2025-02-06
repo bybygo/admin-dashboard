@@ -11,9 +11,9 @@ interface StateContextProps {
   screenSize: number | undefined;
   setScreenSize: (size: number) => void;
   handleClick: (clicked: string) => void;
-  isClicked: { [key: string]: boolean };
-  initialState: { [key: string]: boolean };
-  setIsClicked: React.Dispatch<React.SetStateAction<{ [key: string]: boolean }>>;
+  isClicked: { chat: boolean; cart: boolean; userProfile: boolean; notification: boolean };
+  initialState: { chat: boolean; cart: boolean; userProfile: boolean; notification: boolean };
+  setIsClicked: React.Dispatch<React.SetStateAction<{ chat: boolean; cart: boolean; userProfile: boolean; notification: boolean }>>;
   setActiveMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrentColor: (color: string) => void;
   setCurrentMode: (mode: string) => void;

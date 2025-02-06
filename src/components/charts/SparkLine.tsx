@@ -7,8 +7,8 @@ interface SparklineProps {
   height: string;
   width: string;
   color: string;
-  data: any;
-  type: string;
+  data: Array<{ x: number; yval: number }>;
+  type: 'Line' | 'Column' | 'WinLoss' | 'Pie' | 'Area';
   currentColor: string;
 }
 
@@ -26,7 +26,7 @@ const SparkLine: React.FC<SparklineProps> = ({
       id={id}
       height={height}
       width={width}
-      xName="xval"
+      xName="x"
       yName="yval"
       lineWidth={1}
       valueType="Numeric"
@@ -36,7 +36,7 @@ const SparkLine: React.FC<SparklineProps> = ({
       type={type}
       tooltipSettings={{
         visible: true,
-        format: '${xval} : data ${yval}',
+        format: '${x} : data ${yval}',
         trackLineSettings: {
           visible: true,
         },
