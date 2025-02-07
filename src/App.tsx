@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { FiSettings } from 'react-icons/fi';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { useStateContext } from '@/contexts/ContextProvide';
+import { ThemeMode, useStateContext } from '@/contexts/ContextProvide';
 
 import { Footer, Navbar, Sidebar, ThemeSettings } from './components';
 import {
@@ -43,7 +43,7 @@ const App: React.FC = () => {
     const currentThemeMode = localStorage.getItem('themeMode');
     if (currentThemeColor && currentThemeMode) {
       setCurrentColor(currentThemeColor);
-      setCurrentMode(currentThemeMode);
+      setCurrentMode(currentThemeMode as ThemeMode);
     }
   }, []);
 

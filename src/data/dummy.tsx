@@ -49,13 +49,13 @@ import product9 from './product9.jpg';
 
 export { avatar, avatar2, avatar3, avatar4, product9 };
 
-export const gridOrderImage = (props) => (
+export const gridOrderImage = (props: { ProductImage: string }) => (
   <div>
     <img className="h-20 rounded-xl md:ml-3" src={props.ProductImage} alt="order-item" />
   </div>
 );
 
-export const gridOrderStatus = (props) => (
+export const gridOrderStatus = (props: { StatusBg: string; Status: string }) => (
   <button
     type="button"
     style={{ background: props.StatusBg }}
@@ -79,19 +79,21 @@ export const kanbanGrid = [
 
   { headerText: 'Done', keyField: 'Close', allowToggle: true },
 ];
-const gridEmployeeProfile = (props) => (
+
+const gridEmployeeProfile = (props: { EmployeeImage: string; Name: string }) => (
   <div className="flex items-center gap-2">
     <img className="h-10 w-10 rounded-full" src={props.EmployeeImage} alt="employee" />
     <p>{props.Name}</p>
   </div>
 );
 
-const gridEmployeeCountry = (props) => (
+const gridEmployeeCountry = (props: { Country: string }) => (
   <div className="flex items-center justify-center gap-2">
     <GrLocation />
     <span>{props.Country}</span>
   </div>
 );
+
 export const EditorData = () => (
   <div>
     <h3>
@@ -129,7 +131,12 @@ export const EditorData = () => (
     </h3>
   </div>
 );
-const customerGridImage = (props) => (
+
+const customerGridImage = (props: {
+  CustomerImage: string;
+  CustomerName: string;
+  CustomerEmail: string;
+}) => (
   <div className="image flex gap-4">
     <img className="h-10 w-10 rounded-full" src={props.CustomerImage} alt="employee" />
     <div>
@@ -139,12 +146,13 @@ const customerGridImage = (props) => (
   </div>
 );
 
-const customerGridStatus = (props) => (
+const customerGridStatus = (props: { StatusBg: string; Status: string }) => (
   <div className="flex items-center justify-center gap-2 text-gray-700 capitalize">
     <p style={{ background: props.StatusBg }} className="h-3 w-3 rounded-full" />
     <p>{props.Status}</p>
   </div>
 );
+
 export const areaPrimaryXAxis = {
   valueType: 'DateTime',
   labelFormat: 'y',
@@ -163,17 +171,20 @@ export const areaPrimaryYAxis = {
   minorTickLines: { width: 0 },
   labelStyle: { color: 'gray' },
 };
+
 export const barPrimaryXAxis = {
   valueType: 'Category',
   interval: 1,
   majorGridLines: { width: 0 },
 };
+
 export const barPrimaryYAxis = {
   majorGridLines: { width: 0 },
   majorTickLines: { width: 0 },
   lineStyle: { width: 0 },
   labelStyle: { color: 'transparent' },
 };
+
 const areaChartData = [
   [
     { x: new Date(2002, 0, 1), y: 2.2 },
@@ -305,6 +316,7 @@ export const barCustomSeries = [
     },
   },
 ];
+
 export const colorMappingData = [
   [
     { x: 'Jan', y: 6.96 },
@@ -2924,6 +2936,7 @@ export const lineChartData = [
     { x: new Date(2011, 0, 1), y: 100 },
   ],
 ];
+
 export const dropdownData = [
   {
     Id: '1',
@@ -2938,6 +2951,7 @@ export const dropdownData = [
     Time: 'May 2021',
   },
 ];
+
 export const SparklineAreaData = [
   { x: 1, yval: 2 },
   { x: 2, yval: 6 },
@@ -5721,6 +5735,7 @@ export const financialChartData = [
     volume: 27939544,
   },
 ];
+
 export const PyramidData = [
   { x: 'Sweet Treats', y: 120, text: '120 cal' },
   { x: 'Milk, Youghnut, Cheese', y: 435, text: '435 cal' },

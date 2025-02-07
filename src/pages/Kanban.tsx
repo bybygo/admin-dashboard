@@ -3,7 +3,7 @@ import React from 'react';
 import { ColumnDirective, ColumnsDirective, KanbanComponent } from '@syncfusion/ej2-react-kanban';
 
 import { Header } from '@/components';
-import { kanbanData, kanbanGrid } from '@/data/dummy.js';
+import { kanbanData, kanbanGrid } from '@/data/dummy';
 
 const Kanban = () => {
   return (

@@ -17,7 +17,7 @@ import {
 import { useStateContext } from '@/contexts/ContextProvide';
 
 interface StackedProps {
-  currentMode: string;
+  currentMode?: string;
   width: string;
   height: string;
 }
