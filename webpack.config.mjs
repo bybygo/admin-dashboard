@@ -2,6 +2,7 @@ import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { cpus } from 'os';
 import path from 'path';
 import TerserPlugin from 'terser-webpack-plugin';
 import { fileURLToPath } from 'url';
@@ -35,7 +36,7 @@ export default (env, argv) => {
               loader: 'css-loader',
               options: {
                 importLoaders: 2,
-                sourceMap: true,
+                sourceMap: !isProduction,
                 modules: {
                   auto: true,
                   localIdentName: isProduction ? '[hash:base64]' : '[path][name]__[local]',
@@ -58,6 +59,11 @@ export default (env, argv) => {
           generator: {
             filename: 'images/[hash][ext][query]',
           },
+          parser: {
+            dataUrlCondition: {
+              maxSize: 8 * 1024,
+            },
+          },
         },
         {
           test: /\.svg$/i,
@@ -69,12 +75,20 @@ export default (env, argv) => {
         {
           test: /\.(ts|js)x?$/,
           exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
+          use: [
+            {
+              loader: 'thread-loader',
+              options: {
+                workers: Math.max(cpus().length - 1, 1),
+              },
             },
-          },
+            {
+              loader: 'babel-loader',
+              options: {
+                cacheDirectory: true,
+              },
+            },
+          ],
         },
       ],
     },
@@ -93,29 +107,50 @@ export default (env, argv) => {
         filename: isProduction ? 'css/[name].[contenthash].css' : 'css/[name].css',
         chunkFilename: isProduction ? 'css/[id].[contenthash].css' : 'css/[id].css',
         ignoreOrder: false,
+        experimentalUseImportModule: true,
       }),
-      new webpack.ProgressPlugin((percentage, message, ...args) => {
-        // eslint-disable-next-line no-console
-        console.log(`${(percentage * 100).toFixed(2)}%`, message, ...args);
-      }),
-      new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
-      }),
+      new webpack.ProgressPlugin(),
     ].filter(Boolean),
     optimization: {
       runtimeChunk: 'single',
       splitChunks: {
+        chunks: 'all',
         cacheGroups: {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
+            name(module) {
+              const packagePath = module.context;
+              if (!packagePath) return 'vendor';
+
+              const match = packagePath.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
+              if (!match) return 'vendor';
+
+              const packageName = match[1];
+              return `vendor.${packageName.replace('@', '')}`;
+            },
+            priority: -10,
+            reuseExistingChunk: true,
+          },
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true,
           },
         },
       },
       minimize: isProduction,
       minimizer: [
-        new CssMinimizerPlugin(),
+        new CssMinimizerPlugin({
+          minimizerOptions: {
+            preset: [
+              'default',
+              {
+                discardComments: { removeAll: true },
+                normalizeWhitespace: false,
+              },
+            ],
+          },
+        }),
         new TerserPlugin({
           terserOptions: {
             compress: {
@@ -124,6 +159,7 @@ export default (env, argv) => {
           },
         }),
       ],
+      concatenateModules: true,
     },
     cache: {
       type: 'filesystem',
@@ -145,11 +181,6 @@ export default (env, argv) => {
       open: true,
       compress: true,
       historyApiFallback: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'X-Content-Type-Options': 'nosniff',
-        'X-Frame-Options': 'DENY',
-      },
       client: {
         overlay: {
           errors: true,
